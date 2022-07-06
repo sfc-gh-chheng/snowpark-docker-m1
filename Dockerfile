@@ -6,8 +6,10 @@ ARG py_ver=3.8
 ARG snowflake_channel=https://repo.anaconda.com/pkgs/snowflake
 
 # you can add additional libraries you want conda to install by listing them below the first line and ending with "&& \"
-RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env -c $snowflake_channel python=$py_ver numpy pandas ipykernel scikit-learn streamlit && \
+RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env -c $snowflake_channel python=$py_ver && \
     conda clean --all -f -y
+
+RUN $CONDA_DIR/envs/${conda_env}/bin/pip install numpy pandas ipykernel scikit-learn streamlit
 
 # create Python 3.x environment and link it to jupyter
 RUN $CONDA_DIR/envs/${conda_env}/bin/python -m ipykernel install --user --name=${conda_env} && \
