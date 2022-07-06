@@ -9,6 +9,12 @@ ARG snowflake_channel=https://repo.anaconda.com/pkgs/snowflake
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env -c $snowflake_channel python=$py_ver ipython ipykernel && \
     conda clean --all -f -y
 
+# update essentials
+USER root
+RUN apt-get update && apt-get -y install g++
+
+RUN $CONDA_DIR/envs/${conda_env}/bin/pip install --upgrade pip setuptools wheel
+
 RUN $CONDA_DIR/envs/${conda_env}/bin/pip install numpy pandas scikit-learn streamlit
 
 # create Python 3.x environment and link it to jupyter
@@ -21,10 +27,6 @@ ENV PATH $CONDA_DIR/envs/${conda_env}/bin:$PATH
 
 # if you want this environment to be the default one, uncomment the following line:
 ENV CONDA_DEFAULT_ENV ${conda_env}
-
-# update essentials
-USER root
-RUN apt-get update && apt-get -y install g++
 
 # The code to run when container is started:
 RUN mkdir /opt/notebooks
