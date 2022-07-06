@@ -1,4 +1,4 @@
-FROM jupyter/minimal-notebook:latest
+FROM jupyter/minimal-notebook:aarch64-python-3.10.5
 
 # name your environment and choose python 3.x version
 ARG conda_env=snowpark
@@ -6,10 +6,10 @@ ARG py_ver=3.8
 ARG snowflake_channel=https://repo.anaconda.com/pkgs/snowflake
 
 # you can add additional libraries you want conda to install by listing them below the first line and ending with "&& \"
-RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env -c $snowflake_channel python=$py_ver && \
+RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env -c $snowflake_channel python=$py_ver ipython ipykernel && \
     conda clean --all -f -y
 
-RUN $CONDA_DIR/envs/${conda_env}/bin/pip install numpy pandas ipykernel scikit-learn streamlit
+RUN $CONDA_DIR/envs/${conda_env}/bin/pip install numpy pandas scikit-learn streamlit
 
 # create Python 3.x environment and link it to jupyter
 RUN $CONDA_DIR/envs/${conda_env}/bin/python -m ipykernel install --user --name=${conda_env} && \
