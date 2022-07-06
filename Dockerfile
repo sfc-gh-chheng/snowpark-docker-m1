@@ -1,4 +1,4 @@
-FROM jupyter/minimal-notebook:aarch64-python-3.10.5
+FROM jupyter/minimal-notebook:aarch64-latest
 
 # name your environment and choose python 3.x version
 ARG conda_env=snowpark
